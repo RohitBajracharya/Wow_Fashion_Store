@@ -1,17 +1,7 @@
-# admin_side
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# Grocery-Store
+Flutter Project With Getx, Firebase
+Screenshots:
+**Login Page**
+![Screenshot_1699368170](https://github.com/RohitBajracharya/Grocery-Store/assets/104704874/999b3c63-9148-4395-9951-999d532d0b3e)
+**Home Page**
+![Screenshot_1699368193](https://github.com/RohitBajracharya/Grocery-Store/assets/104704874/e1a5f36f-0ec3-4646-865e-8a37dac90a95)
+![Screenshot_1699368197](https://github.com/RohitBajracharya/Grocery-Store/assets/104704874/a1e9127b-337e-4971-9827-b833121e03ae)
