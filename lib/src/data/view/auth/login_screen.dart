@@ -29,55 +29,65 @@ class _LoginScreenState extends State<LoginScreen> {
             //app logo
             appLogo(size, context),
             //login form
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.withOpacity(0.1) : Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+            loginForm(isDark, size, context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget loginForm(bool isDark, Size size, BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: isDark ? Colors.grey.withOpacity(0.1) : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: size.height / 2,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            //login text
+            Text(
+              "Login",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            //form field
+            formfield(loginController),
+            //forgot password
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    'Forgot Password?',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
-                height: size.height / 2,
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "Login",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    //form field
-                    formfield(loginController),
-                    //forgot password
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            'Forgot Password?',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Obx(
-                      () {
-                        return SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                loginController.login();
-                              }
-                            },
-                            child: loginController.loginLoading.value ? const Center(child: CircularProgressIndicator()) : const Text("Login"),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              ],
+            ),
+            //login button
+            Obx(
+              () {
+                return SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        loginController.login();
+                      }
+                    },
+                    child: loginController.loginLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(color: Colors.white),
+                          )
+                        : const Text("Login"),
+                  ),
+                );
+              },
             ),
           ],
         ),

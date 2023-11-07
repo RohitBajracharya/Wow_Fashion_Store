@@ -1,3 +1,4 @@
+import 'package:admin_side/src/data/view/auth/login_screen.dart';
 import 'package:admin_side/src/data/view/home_screen.dart';
 import 'package:admin_side/src/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
@@ -12,6 +13,13 @@ class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   RxBool loginLoading = false.obs;
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
 
   isLoginLoading(bool loadingValue) {
     loginLoading.value = loadingValue;
@@ -51,6 +59,15 @@ class LoginController extends GetxController {
     }).onError((error, stackTrace) {
       Utils().failureMessage("Wrong Email or Password");
       isLoginLoading(false);
+    });
+  }
+
+  void logout() {
+    _auth.signOut().then((value) {
+      Utils().successMessage("Logout Successfully");
+      Get.to(() => const LoginScreen());
+    }).onError((error, stackTrace) {
+      Utils().failureMessage("Failed to logout");
     });
   }
 }
