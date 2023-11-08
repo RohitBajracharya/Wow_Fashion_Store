@@ -1,6 +1,6 @@
 import 'package:admin_side/firebase_options.dart';
 import 'package:admin_side/src/data/controller/theme_controller.dart';
-import 'package:admin_side/src/data/view/splash_screen.dart';
+import 'package:admin_side/src/routes/route_helper.dart';
 import 'package:admin_side/src/utils/themes/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,9 @@ class _MyAppState extends State<MyApp> {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       themeMode: themeController.themeMode.value,
-      home: const SplashScreen(),
+      initialRoute: RouteHelper.getInitial(),
+      getPages: RouteHelper.routes,
+      defaultTransition: Transition.leftToRight,
     );
   }
 }
