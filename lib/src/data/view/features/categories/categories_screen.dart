@@ -1,9 +1,11 @@
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
+import 'package:admin_side/src/routes/route_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/drawer_controller.dart';
 import '../../../controller/theme_controller.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -15,6 +17,7 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final ThemeController themeController = Get.put(ThemeController());
+  final DrawersController drawerController = Get.put(DrawersController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       children: [
         const SizedBox(height: 10),
         //search field
-        searchField(size),
+        searchField(size, isDark),
         //categories list
         Expanded(
           child: ListView.builder(
@@ -184,7 +187,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   //search field
-  Widget searchField(size) {
+  Widget searchField(size, bool isDark) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -203,7 +206,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              drawerController.selectDrawerItem("Categories");
+              Get.toNamed(RouteHelper.addCategoriesPage);
+            },
             child: const Row(
               children: [
                 Icon(Icons.add),

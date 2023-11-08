@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             //item name
             Container(
-              width: 200,
+              width: 180,
               height: 120,
               decoration: BoxDecoration(
                 color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
