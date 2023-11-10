@@ -1,4 +1,5 @@
 import 'package:admin_side/src/constants/colors.dart';
+import 'package:admin_side/src/constants/sizes.dart';
 import 'package:admin_side/src/services/splash_services.dart';
 import 'package:flutter/material.dart';
 
@@ -21,9 +22,43 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: tbgColor,
       body: Center(
-        child: Text(
-          'Grocery Admin Panel',
-          style: Theme.of(context).textTheme.titleLarge,
+        child: SizedBox(
+          height: screenHeight / 2,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // app icon
+              const SizedBox(
+                height: 150,
+                width: 150,
+                child: Image(
+                  image: AssetImage("assets/icons/appIcon2.png"),
+                ),
+              ),
+              //E-Clothing store text
+              Text.rich(
+                textAlign: TextAlign.center,
+                TextSpan(
+                  text: 'E-Clothing\n',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: tappColor,
+                        fontSize: 40,
+                      ),
+                  children: [
+                    TextSpan(
+                      text: 'Store',
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: tappColor,
+                            fontSize: 35,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
