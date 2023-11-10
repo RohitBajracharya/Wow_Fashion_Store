@@ -41,14 +41,14 @@ class _SplashScreenState extends State<SplashScreen> {
               Text.rich(
                 textAlign: TextAlign.center,
                 TextSpan(
-                  text: 'E-Clothing\n',
+                  text: 'Wow\n',
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: tappColor,
                         fontSize: 40,
                       ),
                   children: [
                     TextSpan(
-                      text: 'Store',
+                      text: 'Fashion',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: tappColor,
                             fontSize: 35,

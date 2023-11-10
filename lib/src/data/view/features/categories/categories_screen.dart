@@ -48,7 +48,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           child: ListView.builder(
             itemCount: 10,
             itemBuilder: (context, index) {
-              return categoryTiles(isDark, "assets/icons/fruits.png", "Fruits", "6");
+              return categoryTiles(isDark, isDark ? "assets/icons/hoodie-white.png" : "assets/icons/hoodie.png", "Hoodie", "6");
             },
           ),
         ),
@@ -67,7 +67,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(10),
-          color: isDark ? Colors.grey.shade700 : taccentColor,
+          color: isDark ? taccentDarkColor : taccentColor,
           boxShadow: const [
             BoxShadow(
               color: tappColor,
@@ -96,7 +96,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   //category name
                   Text(
                     categoryName,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: isDark ? ttextDarkColor : ttextColor,
+                        ),
                   ),
                   const SizedBox(height: 10),
                   //no of items in category
@@ -106,7 +108,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
+                      color: isDark ? ttextDarkColor : ttextColor,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -114,13 +116,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         //stock icon
                         Icon(
                           Icons.inventory_outlined,
-                          color: isDark ? ttextColor : null,
+                          color: isDark ? ttextColor : ttextDarkColor,
                         ),
                         //no of items
                         Text(
                           noOfItems,
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: isDark ? ttextColor : null,
+                                color: isDark ? ttextColor : ttextDarkColor,
+                                fontWeight: FontWeight.bold,
                               ),
                         ),
                       ],

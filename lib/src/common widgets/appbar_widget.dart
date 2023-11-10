@@ -24,16 +24,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = themeController.themeMode.value;
-    bool isDark = themeMode == ThemeMode.dark;
-
-    return appBar(isDark);
+    return appBar();
   }
 
-  AppBar appBar(bool isDark) {
+  AppBar appBar() {
     return AppBar(
       title: Text(
-        "E-Grocery ${widget.pageName}",
+        "Wow Fashion ${widget.pageName}",
       ),
       actions: [
         GestureDetector(
@@ -43,8 +40,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Icon(
-              isDark ? Icons.light_mode : Icons.dark_mode,
+            child: Obx(
+              () {
+                bool isDark = themeController.themeMode.value == ThemeMode.dark;
+                return Icon(
+                  isDark ? Icons.light_mode : Icons.dark_mode,
+                );
+              },
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
+import 'package:admin_side/src/constants/sizes.dart';
 import 'package:admin_side/src/data/controller/drawer_controller.dart';
 import 'package:admin_side/src/data/controller/login_controller.dart';
 import 'package:admin_side/src/data/controller/theme_controller.dart';
@@ -188,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             //item name
             Container(
-              width: 180,
+              width: screenWidth * .42,
               height: 120,
               decoration: BoxDecoration(
                 color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
@@ -210,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //item number
             Positioned(
               top: 100,
-              right: 50,
+              left: (screenWidth * .42 - 100) / 2,
               child: Container(
                 width: 100,
                 height: 40,

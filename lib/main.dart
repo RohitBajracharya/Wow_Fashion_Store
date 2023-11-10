@@ -23,15 +23,17 @@ class _MyAppState extends State<MyApp> {
   final ThemeController themeController = Get.put(ThemeController());
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Grocery Admin Panel',
-      theme: TAppTheme.lightTheme,
-      darkTheme: TAppTheme.darkTheme,
-      themeMode: themeController.themeMode.value,
-      initialRoute: RouteHelper.getInitial(),
-      getPages: RouteHelper.routes,
-      defaultTransition: Transition.leftToRight,
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Wow Fashion Admin Panel',
+        theme: TAppTheme.lightTheme,
+        darkTheme: TAppTheme.darkTheme,
+        themeMode: themeController.themeMode.value,
+        initialRoute: RouteHelper.getInitial(),
+        getPages: RouteHelper.routes,
+        defaultTransition: Transition.leftToRight,
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThemeController extends GetxController {
-  Rx<ThemeMode> themeMode = ThemeMode.system.obs;
+  Rx<ThemeMode> themeMode = ThemeMode.light.obs; // Set an initial theme mode
 
   ThemeData get lightTheme => ThemeData.light();
   ThemeData get darkTheme => ThemeData.dark();
