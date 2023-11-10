@@ -33,8 +33,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           drawerMenuItem(context, Icons.category_outlined, "Categories", () {
             Get.toNamed(RouteHelper.categoriesPage);
           }),
+          drawerMenuItem(context, Icons.local_grocery_store_outlined, "Products", () {
+            Get.toNamed(RouteHelper.productPage);
+          }),
           drawerMenuItem(context, Icons.receipt_long_outlined, "Orders", () {}),
-          drawerMenuItem(context, Icons.local_grocery_store_outlined, "Products", () {}),
           drawerMenuItem(context, Icons.people_outline, "Customers", () {}),
           drawerMenuItem(context, Icons.cancel_outlined, "Out of Stock", () {}),
           const SizedBox(height: 10),

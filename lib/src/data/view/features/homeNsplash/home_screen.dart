@@ -141,18 +141,19 @@ class _HomeScreenState extends State<HomeScreen> {
               drawerController.selectDrawerItem("Categories");
               Get.toNamed(RouteHelper.categoriesPage);
             }, isDark),
-            //orders
-            itemCard(Icons.receipt_long_outlined, "Orders", "25", () {
-              drawerController.selectDrawerItem("Orders");
+            //products
+            itemCard(Icons.local_grocery_store_outlined, "Products", "200", () {
+              drawerController.selectDrawerItem("Products");
+              Get.toNamed(RouteHelper.productPage);
             }, isDark),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            //products
-            itemCard(Icons.local_grocery_store_outlined, "Products", "200", () {
-              drawerController.selectDrawerItem("Products");
+            //orders
+            itemCard(Icons.receipt_long_outlined, "Orders", "25", () {
+              drawerController.selectDrawerItem("Orders");
             }, isDark),
             //customers
             itemCard(Icons.people_outline, "Customers", "55", () {
