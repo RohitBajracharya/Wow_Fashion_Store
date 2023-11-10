@@ -1,5 +1,5 @@
 import 'package:admin_side/src/data/view/auth/login_screen.dart';
-import 'package:admin_side/src/data/view/home_screen.dart';
+import 'package:admin_side/src/data/view/features/homeNsplash/home_screen.dart';
 import 'package:admin_side/src/utils/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
