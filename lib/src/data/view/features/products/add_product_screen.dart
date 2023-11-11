@@ -86,7 +86,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       padding: const EdgeInsets.all(8.0),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white60,
+        color: isDark ? taccentDarkColor : taccentColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Form(

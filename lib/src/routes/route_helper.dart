@@ -3,6 +3,7 @@ import 'package:admin_side/src/data/view/features/categories/add_categories_scre
 import 'package:admin_side/src/data/view/features/categories/categories_screen.dart';
 import 'package:admin_side/src/data/view/features/homeNsplash/home_screen.dart';
 import 'package:admin_side/src/data/view/features/homeNsplash/splash_screen.dart';
+import 'package:admin_side/src/data/view/features/orders/order_screen.dart';
 import 'package:admin_side/src/data/view/features/products/add_product_screen.dart';
 import 'package:admin_side/src/data/view/features/products/product_screen.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ class RouteHelper {
   static const String addCategoriesPage = "/add-categories-page";
   static const String productPage = "/product-page";
   static const String addProductPage = "/add-product-page";
+  static const String orderPage = "/order-page";
 
   static String getInitial() => initial;
   static String getLoginPage() => loginPage;
@@ -23,6 +25,7 @@ class RouteHelper {
   static String getAddCategoriesPage() => addCategoriesPage;
   static String getProductPage() => productPage;
   static String getAddProductPage() => addProductPage;
+  static String getOrderPage() => orderPage;
 
   static List<GetPage> routes = [
     //splash screen
@@ -39,5 +42,7 @@ class RouteHelper {
     GetPage(name: productPage, page: () => const ProductScreen()),
     //add product screen
     GetPage(name: addProductPage, page: () => const AddProductScreen()),
+    //order screen
+    GetPage(name: orderPage, page: () => const OrderScreen()),
   ];
 }
