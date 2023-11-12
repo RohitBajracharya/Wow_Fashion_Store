@@ -18,8 +18,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final DrawersController drawerController = Get.put(DrawersController());
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var drawerSize = size.width * .8;
+    var drawerSize = Get.size.width * .8;
 
     return Drawer(
       backgroundColor: Colors.white,

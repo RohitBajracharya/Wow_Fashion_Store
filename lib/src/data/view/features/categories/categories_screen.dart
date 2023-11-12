@@ -1,6 +1,7 @@
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
+import 'package:admin_side/src/constants/sizes.dart';
 import 'package:admin_side/src/routes/route_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,34 +22,25 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var themeMode = themeController.themeMode.value;
-    bool isDark;
-    if (themeMode == ThemeMode.dark) {
-      isDark = true;
-    } else {
-      isDark = false;
-    }
-
     return Scaffold(
       appBar: const AppBarWidget(pageName: "Categories"),
       drawer: const DrawerWidget(),
-      body: mainBody(isDark, size),
+      body: mainBody(),
     );
   }
 
-  Widget mainBody(bool isDark, var size) {
+  Widget mainBody() {
     return Column(
       children: [
         const SizedBox(height: 10),
         //search field
-        searchField(size, isDark),
+        searchField(),
         //categories list
         Expanded(
           child: ListView.builder(
             itemCount: 10,
             itemBuilder: (context, index) {
-              return categoryTiles(isDark, isDark ? "assets/icons/hoodie-white.png" : "assets/icons/hoodie.png", "Hoodie", "6");
+              return categoryTiles(themeController.isDark() ? "assets/icons/hoodie-white.png" : "assets/icons/hoodie.png", "Hoodie", "6");
             },
           ),
         ),
@@ -57,7 +49,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   //category list
-  Widget categoryTiles(bool isDark, String image, String categoryName, String noOfItems) {
+  Widget categoryTiles(String image, String categoryName, String noOfItems) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Container(
@@ -67,7 +59,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(10),
-          color: isDark ? taccentDarkColor : taccentColor,
+          color: themeController.isDark() ? taccentDarkColor : taccentColor,
           boxShadow: const [
             BoxShadow(
               color: tappColor,
@@ -97,7 +89,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   Text(
                     categoryName,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: isDark ? ttextDarkColor : ttextColor,
+                          color: themeController.isDark() ? ttextDarkColor : ttextColor,
                         ),
                   ),
                   const SizedBox(height: 10),
@@ -108,7 +100,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(10),
-                      color: isDark ? ttextDarkColor : ttextColor,
+                      color: themeController.isDark() ? ttextDarkColor : ttextColor,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,13 +108,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         //stock icon
                         Icon(
                           Icons.inventory_outlined,
-                          color: isDark ? ttextColor : ttextDarkColor,
+                          color: themeController.isDark() ? ttextColor : ttextDarkColor,
                         ),
                         //no of items
                         Text(
                           noOfItems,
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: isDark ? ttextColor : ttextDarkColor,
+                                color: themeController.isDark() ? ttextColor : ttextDarkColor,
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
@@ -190,14 +182,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   //search field
-  Widget searchField(size, bool isDark) {
+  Widget searchField() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            width: size.width * .7,
+            width: screenWidth * .7,
             child: TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Search Category',

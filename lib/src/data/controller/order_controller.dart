@@ -6,7 +6,6 @@ class OrderController extends GetxController {
   Rx<DateTime> selectedToDate = DateTime.now().obs;
 
   Future<void> selectFromDate() async {
-    print("preess");
     final BuildContext? context = Get.context;
     final DateTime? pickedFrom = await showDatePicker(
       context: context!,
@@ -14,7 +13,7 @@ class OrderController extends GetxController {
       firstDate: DateTime(2023),
       lastDate: DateTime.now(),
     );
-    if (pickedFrom != null && pickedFrom != selectedFromDate) {
+    if (pickedFrom != null && pickedFrom != selectedFromDate.value) {
       selectedFromDate.value = pickedFrom;
     }
   }
@@ -24,10 +23,10 @@ class OrderController extends GetxController {
     final DateTime? pickedTo = await showDatePicker(
       context: context!,
       initialDate: selectedToDate.value,
-      firstDate: DateTime.now(),
+      firstDate: selectedFromDate.value,
       lastDate: DateTime.now(),
     );
-    if (pickedTo != null && pickedTo != selectedToDate) {
+    if (pickedTo != null && pickedTo != selectedToDate.value) {
       selectedToDate.value = pickedTo;
     }
   }

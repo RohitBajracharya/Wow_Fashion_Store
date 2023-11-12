@@ -35,27 +35,19 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = themeController.themeMode.value;
-    bool isDark;
-
-    if (themeMode == ThemeMode.dark) {
-      isDark = true;
-    } else {
-      isDark = false;
-    }
     return Scaffold(
-      backgroundColor: isDark ? tbgDarkColor : tbgColor,
+      backgroundColor: themeController.isDark() ? tbgDarkColor : tbgColor,
       appBar: const AppBarWidget(pageName: "Add Category"),
       drawer: const DrawerWidget(),
-      body: mainBody(isDark),
+      body: mainBody(),
     );
   }
 
-  Widget mainBody(bool isDark) {
+  Widget mainBody() {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: isDark ? tbgDarkColor : tbgColor,
+        color: themeController.isDark() ? tbgDarkColor : tbgColor,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(10),
       ),
@@ -68,18 +60,18 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
           ),
           const SizedBox(height: 20),
           // category form
-          form(isDark),
+          form(),
         ],
       ),
     );
   }
 
-  Widget form(bool isDark) {
+  Widget form() {
     return Container(
       padding: const EdgeInsets.all(8.0),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: isDark ? taccentDarkColor : taccentColor,
+        color: themeController.isDark() ? taccentDarkColor : taccentColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Form(
@@ -132,7 +124,7 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                         child: Text(
                           "Choose Icon",
                           style: TextStyle(
-                            color: isDark ? ttextColor : ttextDarkColor,
+                            color: themeController.isDark() ? ttextColor : ttextDarkColor,
                           ),
                         ),
                       ),

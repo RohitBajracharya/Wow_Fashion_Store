@@ -1,5 +1,6 @@
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
+import 'package:admin_side/src/common%20widgets/setting_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
 import 'package:admin_side/src/constants/sizes.dart';
 import 'package:admin_side/src/data/controller/order_controller.dart';
@@ -21,31 +22,23 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = themeController.themeMode.value;
-    bool isDark;
-    if (themeMode == ThemeMode.dark) {
-      isDark = true;
-    } else {
-      isDark = false;
-    }
-
     return Scaffold(
       appBar: const AppBarWidget(pageName: "Orders"),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
-        child: mainBody(isDark),
+        child: mainBody(),
       ),
     );
   }
 
-  Widget mainBody(bool isDark) {
+  Widget mainBody() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          orderTypes(isDark),
+          orderTypes(),
           const SizedBox(height: 20),
-          dateField(isDark),
+          dateField(),
           const SizedBox(height: 20),
           orderTable(),
         ],
@@ -78,6 +71,7 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  // table header
   Widget tableHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
@@ -157,6 +151,7 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  //table Data
   Widget tableData(String id, String name, String date, String item, String price, String status) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
@@ -168,6 +163,7 @@ class _OrderScreenState extends State<OrderScreen> {
       ),
       child: Row(
         children: [
+          //id
           SizedBox(
             width: 50,
             child: Center(
@@ -176,6 +172,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
           ),
+          //customer name
           SizedBox(
             width: 150,
             child: Center(
@@ -184,6 +181,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
           ),
+          //ordered date
           SizedBox(
             width: 100,
             child: Center(
@@ -192,6 +190,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
           ),
+          //ordered item name
           SizedBox(
             width: 150,
             child: Center(
@@ -200,6 +199,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
           ),
+          //item price
           SizedBox(
             width: 100,
             child: Center(
@@ -208,6 +208,7 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
           ),
+          //order status
           SizedBox(
             width: 100,
             child: Center(
@@ -221,9 +222,10 @@ class _OrderScreenState extends State<OrderScreen> {
                   )),
             ),
           ),
+          //setting icon
           const SizedBox(
             width: 100,
-            child: Icon(Icons.settings),
+            child: SettingWidget(icon: Icons.settings),
           ),
         ],
       ),
@@ -231,7 +233,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   //dateField
-  Widget dateField(bool isDark) {
+  Widget dateField() {
     return Column(
       children: [
         // from date
@@ -241,7 +243,7 @@ class _OrderScreenState extends State<OrderScreen> {
             padding: const EdgeInsets.all(8.0),
             width: screenWidth,
             decoration: BoxDecoration(
-              color: isDark ? tappDarkColor : tappColor,
+              color: themeController.isDark() ? tappDarkColor : tappColor,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10),
             ),
@@ -275,7 +277,7 @@ class _OrderScreenState extends State<OrderScreen> {
             padding: const EdgeInsets.all(8.0),
             width: screenWidth,
             decoration: BoxDecoration(
-              color: isDark ? tappDarkColor : tappColor,
+              color: themeController.isDark() ? tappDarkColor : tappColor,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10),
             ),
@@ -301,7 +303,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   //order types
-  Widget orderTypes(bool isDark) {
+  Widget orderTypes() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -309,7 +311,7 @@ class _OrderScreenState extends State<OrderScreen> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isDark ? tappDarkColor : tappColor,
+                color: themeController.isDark() ? tappDarkColor : tappColor,
                 width: 2.0,
               ),
             ),
