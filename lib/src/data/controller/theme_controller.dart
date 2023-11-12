@@ -20,4 +20,8 @@ class ThemeController extends GetxController {
       return false;
     }
   }
+
+  TextTheme getTextTheme() {
+    return Get.theme.textTheme;
+  }
 }

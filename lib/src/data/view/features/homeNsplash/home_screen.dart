@@ -152,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //customers
             itemCard(Icons.people_outline, "Customers", "55", () {
               drawerController.selectDrawerItem("Customers");
+              Get.toNamed(RouteHelper.customerPage);
             }),
           ],
         ),

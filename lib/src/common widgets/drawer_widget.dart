@@ -38,7 +38,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           drawerMenuItem(context, Icons.receipt_long_outlined, "Orders", () {
             Get.toNamed(RouteHelper.orderPage);
           }),
-          drawerMenuItem(context, Icons.people_outline, "Customers", () {}),
+          drawerMenuItem(context, Icons.people_outline, "Customers", () {
+            Get.toNamed(RouteHelper.customerPage);
+          }),
           drawerMenuItem(context, Icons.cancel_outlined, "Out of Stock", () {}),
           const SizedBox(height: 10),
           Divider(color: Colors.grey.shade200, thickness: 2),

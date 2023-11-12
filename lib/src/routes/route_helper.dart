@@ -1,6 +1,7 @@
 import 'package:admin_side/src/data/view/auth/login_screen.dart';
 import 'package:admin_side/src/data/view/features/categories/add_categories_screen.dart';
 import 'package:admin_side/src/data/view/features/categories/categories_screen.dart';
+import 'package:admin_side/src/data/view/features/customers/customer_screen.dart';
 import 'package:admin_side/src/data/view/features/homeNsplash/home_screen.dart';
 import 'package:admin_side/src/data/view/features/homeNsplash/splash_screen.dart';
 import 'package:admin_side/src/data/view/features/orders/order_screen.dart';
@@ -17,6 +18,7 @@ class RouteHelper {
   static const String productPage = "/product-page";
   static const String addProductPage = "/add-product-page";
   static const String orderPage = "/order-page";
+  static const String customerPage = "/customer-page";
 
   static String getInitial() => initial;
   static String getLoginPage() => loginPage;
@@ -26,6 +28,7 @@ class RouteHelper {
   static String getProductPage() => productPage;
   static String getAddProductPage() => addProductPage;
   static String getOrderPage() => orderPage;
+  static String getCustomerPage() => customerPage;
 
   static List<GetPage> routes = [
     //splash screen
@@ -44,5 +47,7 @@ class RouteHelper {
     GetPage(name: addProductPage, page: () => const AddProductScreen()),
     //order screen
     GetPage(name: orderPage, page: () => const OrderScreen()),
+    //customer screen
+    GetPage(name: customerPage, page: () => const CustomerScreen()),
   ];
 }
