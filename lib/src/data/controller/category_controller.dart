@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:admin_side/src/utils/utils.dart';
@@ -9,14 +10,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
 class CategoryController extends GetxController {
-  final _fireStore = FirebaseFirestore.instance.collection("categories");
+  final fireStore = FirebaseFirestore.instance.collection("categories");
   final TextEditingController nameController = TextEditingController();
   final RxBool loading = false.obs;
+  final StreamController<List<Map<String, dynamic>>> _categoryController = StreamController<List<Map<String, dynamic>>>.broadcast();
+  Stream<List<Map<String, dynamic>>> get categoryStream => _categoryController.stream;
 
   //image
   final Rx<File?> _image = Rx<File?>(null);
   File? get image => _image.value;
   final picker = ImagePicker();
+  @override
+  void dispose() {
+    _categoryController.close();
+    super.dispose();
+  }
 
   // method to get image from gallery
   Future<void> getGalleryImage() async {
@@ -55,26 +63,47 @@ class CategoryController extends GetxController {
 
   //method to add categories in database
   Future<void> addCategory() async {
-    print("add Category method called");
     String id = DateTime.now().millisecond.toString();
-
     isLoading(true);
     final imageName = path.basename(image!.path);
-    final firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance.ref().child(imageName);
-    await firebaseStorageRef.putFile(_image.value!);
-    final String imageUrl = await firebaseStorageRef.getDownloadURL();
-    print(" downloaded imageurl: $imageUrl");
+    if (await categoryAlreadyExist()) {
+      isLoading(false);
+      Utils().failureMessage("Category Name already exists");
+      return;
+    } else {
+      final firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance.ref().child(imageName);
+      await firebaseStorageRef.putFile(_image.value!);
+      final String imageUrl = await firebaseStorageRef.getDownloadURL();
+      await fireStore.doc(id).set({
+        'id': id,
+        'iconImage': imageUrl,
+        'categoryName': nameController.text.toString(),
+      }).then((value) {
+        nameController.clear();
+        _image.value = null;
+        isLoading(false);
+        Get.back();
+        Utils().successMessage("New Category added");
+      }).onError((error, stackTrace) {
+        isLoading(false);
+        Utils().successMessage("New Category Failed to add");
+      });
+    }
+  }
 
-    await _fireStore.doc(id).set({
-      'id': id,
-      'iconImage': imageUrl,
-      'categoryName': nameController.text.toString(),
-    }).then((value) {
-      isLoading(false);
-      Utils().successMessage("New Category added");
+  // method to check if category name already exists
+  Future<bool> categoryAlreadyExist() async {
+    String categoryName = nameController.text.toString();
+    QuerySnapshot querySnapshot = await fireStore.where('categoryName', isEqualTo: categoryName).get();
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  //method to delete category
+  void deleteCategory(String id) {
+    fireStore.doc(id).delete().then((value) {
+      Utils().successMessage("One Category Deleted");
     }).onError((error, stackTrace) {
-      isLoading(false);
-      Utils().successMessage("New Category Failed to add");
+      Utils().failureMessage("Failure to Delete Category");
     });
   }
 }

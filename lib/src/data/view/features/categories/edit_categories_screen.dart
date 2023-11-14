@@ -10,30 +10,35 @@ import 'package:get/get.dart';
 
 import '../../../controller/theme_controller.dart';
 
-class AddCategoriesScreen extends StatefulWidget {
-  const AddCategoriesScreen({
+class EditCategoriesScreen extends StatefulWidget {
+  const EditCategoriesScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddCategoriesScreen> createState() => _AddCategoriesScreenState();
+  State<EditCategoriesScreen> createState() => _EditCategoriesScreenState();
 }
 
-class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
+class _EditCategoriesScreenState extends State<EditCategoriesScreen> {
   final ThemeController themeController = Get.put(ThemeController());
   final CategoryController categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic>? arguments = Get.arguments;
+    String id = arguments?['id'] ?? '';
+    String iconImage = arguments?['iconImage'] ?? '';
+    String categoryName = arguments?['categoryName'] ?? '';
+
     return Scaffold(
       backgroundColor: themeController.isDark() ? tbgDarkColor : tbgColor,
       appBar: const AppBarWidget(pageName: "Add Category"),
       drawer: const DrawerWidget(),
-      body: mainBody(),
+      body: mainBody(id, iconImage, categoryName),
     );
   }
 
-  Widget mainBody() {
+  Widget mainBody(String id, String iconImage, String categoryName) {
     return Container(
       height: double.infinity,
       padding: const EdgeInsets.all(16.0),
@@ -52,16 +57,16 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
             ),
             const SizedBox(height: 20),
             // category form
-            form(),
+            form(id, iconImage, categoryName),
           ],
         ),
       ),
     );
   }
 
-  Widget form() {
-    final CategoryController categoryController = Get.put(CategoryController());
+  Widget form(String id, String iconImage, String categoryName) {
     final formKey = GlobalKey<FormState>();
+    categoryController.nameController.text = categoryName;
     return Container(
       padding: const EdgeInsets.all(16.0),
       width: double.infinity,
@@ -88,17 +93,10 @@ class _AddCategoriesScreenState extends State<AddCategoriesScreen> {
                         color: themeController.isDark() ? Colors.white : Colors.black,
                       ),
                     ),
-                    child: categoryController.image != null
-                        ? Image.file(
-                            categoryController.image!.absolute,
-                            color: themeController.isDark() ? Colors.white : Colors.black,
-                          )
-                        : const Center(
-                            child: Icon(
-                              Icons.image,
-                              size: 32,
-                            ),
-                          ),
+                    child: Image(
+                      image: NetworkImage(iconImage),
+                      color: themeController.isDark() ? Colors.white : null,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),

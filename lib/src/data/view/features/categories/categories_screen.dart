@@ -2,7 +2,9 @@ import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
 import 'package:admin_side/src/constants/sizes.dart';
+import 'package:admin_side/src/data/controller/category_controller.dart';
 import 'package:admin_side/src/routes/route_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +21,7 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final ThemeController themeController = Get.put(ThemeController());
   final DrawersController drawerController = Get.put(DrawersController());
+  final CategoryController categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +40,36 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         searchField(),
         //categories list
         Expanded(
-          child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return categoryTiles(themeController.isDark() ? "assets/icons/hoodie-white.png" : "assets/icons/hoodie.png", "Hoodie", "6");
+          child: StreamBuilder<QuerySnapshot>(
+            stream: categoryController.fireStore.snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: tappColor,
+                  ),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(
+                  child: Text('No categories found.'),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  var id = snapshot.data!.docs[index]['id'].toString();
+                  var image = snapshot.data!.docs[index]['iconImage'];
+                  var categoryName = snapshot.data!.docs[index]['categoryName'];
+                  return categoryTiles(id, image, categoryName, "10");
+                },
+              );
             },
           ),
         ),
@@ -49,7 +78,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   //category list
-  Widget categoryTiles(String image, String categoryName, String noOfItems) {
+  Widget categoryTiles(String id, String iconImage, String categoryName, String noOfItems) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Container(
@@ -73,11 +102,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             //image
             Padding(
               padding: const EdgeInsets.only(left: 16.0),
-              child: Image(
-                image: AssetImage(image),
+              child: SizedBox(
+                width: 75,
+                height: 75,
+                child: Image(
+                  image: NetworkImage(iconImage),
+                  color: themeController.isDark() ? Colors.white : null,
+                ),
               ),
             ),
-            const SizedBox(width: 30),
+            const SizedBox(width: 20),
             //category name and no of items in category
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -126,7 +160,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
             const Spacer(),
             //delete and edit button
-            editNdeleteButton(),
+            editNdeleteButton(id, iconImage, categoryName),
           ],
         ),
       ),
@@ -134,12 +168,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   // edit and delete button
-  Widget editNdeleteButton() {
+  Widget editNdeleteButton(String id, String iconImage, String categoryName) {
     return Column(
       children: [
         //edit icon
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(RouteHelper.editCategoriesPage, arguments: {
+              'id': id,
+              'iconImage': iconImage,
+              'categoryName': categoryName,
+            });
+          },
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.green,
@@ -159,7 +199,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         ),
         //delete icon
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            categoryController.deleteCategory(id);
+          },
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.red,

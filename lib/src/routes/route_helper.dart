@@ -1,6 +1,7 @@
 import 'package:admin_side/src/data/view/auth/login_screen.dart';
 import 'package:admin_side/src/data/view/features/categories/add_categories_screen.dart';
 import 'package:admin_side/src/data/view/features/categories/categories_screen.dart';
+import 'package:admin_side/src/data/view/features/categories/edit_categories_screen.dart';
 import 'package:admin_side/src/data/view/features/customers/customer_screen.dart';
 import 'package:admin_side/src/data/view/features/homeNsplash/home_screen.dart';
 import 'package:admin_side/src/data/view/features/homeNsplash/splash_screen.dart';
@@ -15,6 +16,7 @@ class RouteHelper {
   static const String homePage = "/home-page";
   static const String categoriesPage = "/categories-page";
   static const String addCategoriesPage = "/add-categories-page";
+  static const String editCategoriesPage = "/edit-categories-page";
   static const String productPage = "/product-page";
   static const String addProductPage = "/add-product-page";
   static const String orderPage = "/order-page";
@@ -25,6 +27,7 @@ class RouteHelper {
   static String getHomePage() => homePage;
   static String getCategoriesPage() => categoriesPage;
   static String getAddCategoriesPage() => addCategoriesPage;
+  static String getEditCategoriesPage() => editCategoriesPage;
   static String getProductPage() => productPage;
   static String getAddProductPage() => addProductPage;
   static String getOrderPage() => orderPage;
@@ -41,6 +44,8 @@ class RouteHelper {
     GetPage(name: categoriesPage, page: () => const CategoriesScreen()),
     //add category screen
     GetPage(name: addCategoriesPage, page: () => const AddCategoriesScreen()),
+    //edit category screen
+    GetPage(name: editCategoriesPage, page: () => const EditCategoriesScreen()),
     //product screen
     GetPage(name: productPage, page: () => const ProductScreen()),
     //add product screen
