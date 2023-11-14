@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:admin_side/src/common%20widgets/add_button.dart';
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
@@ -101,12 +102,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
             formField("Product Quantity"),
             const SizedBox(height: 15),
             // submit button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text("Add Product"),
-              ),
+            AddButtonWiget(
+              buttonName: "Add Product",
+              onPress: () {},
+              loading: true,
             ),
           ],
         ),
