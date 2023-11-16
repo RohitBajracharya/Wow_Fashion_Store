@@ -70,11 +70,12 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget productCardList() {
+    print("build");
     return SingleChildScrollView(
       child: SizedBox(
         height: 10000,
         child: StreamBuilder<QuerySnapshot>(
-          stream: productController.productFireStoreRef.snapshots(),
+          stream: _selectedCategory == "All Products" ? productController.productFireStoreRef.snapshots() : productController.productFireStoreRef.where("category", isEqualTo: _selectedCategory).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

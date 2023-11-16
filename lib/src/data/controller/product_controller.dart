@@ -154,7 +154,6 @@ class ProductController extends GetxController {
   // method to edit category
   void editProduct(Map<String, dynamic> item) async {
     isLoading(true);
-    print("image $image");
     final String imageUrl;
     if (image == null) {
       imageUrl = item['productImage'];
