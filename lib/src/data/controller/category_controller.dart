@@ -106,4 +106,32 @@ class CategoryController extends GetxController {
       Utils().failureMessage("Failure to Delete Category");
     });
   }
+
+  // method to edit category
+  void editCategory(String id) async {
+    isLoading(true);
+    final imageName = path.basename(image!.path);
+    if (await categoryAlreadyExist()) {
+      isLoading(false);
+      Utils().failureMessage("Category Name already exists");
+      return;
+    } else {
+      final firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance.ref().child(imageName);
+      await firebaseStorageRef.putFile(_image.value!);
+      final String imageUrl = await firebaseStorageRef.getDownloadURL();
+      await fireStore.doc(id).update({
+        'iconImage': imageUrl,
+        'categoryName': nameController.text.toString(),
+      }).then((value) {
+        nameController.clear();
+        _image.value = null;
+        isLoading(false);
+        Get.back();
+        Utils().successMessage("Category Edited");
+      }).onError((error, stackTrace) {
+        isLoading(false);
+        Utils().successMessage("Category Failed to edit");
+      });
+    }
+  }
 }
