@@ -35,6 +35,7 @@ class ProductController extends GetxController {
     _selectedCategory.value = value;
   }
 
+
   //image
   final Rx<File?> _image = Rx<File?>(null);
   File? get image => _image.value;

@@ -23,6 +23,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   final DrawersController drawerController = Get.put(DrawersController());
   final CategoryController categoryController = Get.put(CategoryController());
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   categoryController.updateCategoryCounts();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +47,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         //categories list
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
-            stream: categoryController.fireStore.snapshots(),
+            stream: categoryController.categoryFireStoreRef.snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -67,7 +73,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   var id = snapshot.data!.docs[index]['id'].toString();
                   var image = snapshot.data!.docs[index]['iconImage'];
                   var categoryName = snapshot.data!.docs[index]['categoryName'];
-                  return categoryTiles(id, image, categoryName, "10");
+                  return FutureBuilder<int>(
+                    future: categoryController.getCountForCategory(categoryName),
+                    builder: (context, countSnapshot) {
+                      if (countSnapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      var noOfItems = countSnapshot.data ?? 0;
+                      categoryController.updateItemNumber(id, noOfItems);
+                      return categoryTiles(id, image, categoryName, noOfItems);
+                    },
+                  );
                 },
               );
             },
@@ -78,7 +94,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   //category list
-  Widget categoryTiles(String id, String iconImage, String categoryName, String noOfItems) {
+  Widget categoryTiles(String id, String iconImage, String categoryName, int noOfItems) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: Container(
@@ -146,7 +162,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         ),
                         //no of items
                         Text(
-                          noOfItems,
+                          noOfItems.toString(),
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                 color: themeController.isDark() ? ttextColor : ttextDarkColor,
                                 fontWeight: FontWeight.bold,

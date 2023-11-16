@@ -70,7 +70,6 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget productCardList() {
-    print("build");
     return SingleChildScrollView(
       child: SizedBox(
         height: 10000,
@@ -85,15 +84,6 @@ class _ProductScreenState extends State<ProductScreen> {
               );
             }
 
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(
-                child: Text('No categories found.'),
-              );
-            }
             List<Map<String, dynamic>> items = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
             return ListView.builder(
               itemCount: (items.length / 2).ceil(),
