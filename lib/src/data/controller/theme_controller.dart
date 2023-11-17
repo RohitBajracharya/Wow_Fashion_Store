@@ -12,4 +12,16 @@ class ThemeController extends GetxController {
     themeMode.value = themeMode.value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     Get.changeTheme(themeMode.value == ThemeMode.light ? TAppTheme.lightTheme : TAppTheme.darkTheme);
   }
+
+  bool isDark() {
+    if (themeMode.value == ThemeMode.dark) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  TextTheme getTextTheme() {
+    return Get.theme.textTheme;
+  }
 }

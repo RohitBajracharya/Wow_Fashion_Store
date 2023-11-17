@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:admin_side/src/common%20widgets/add_button.dart';
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
@@ -41,27 +42,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = themeController.themeMode.value;
-    bool isDark;
-
-    if (themeMode == ThemeMode.dark) {
-      isDark = true;
-    } else {
-      isDark = false;
-    }
     return Scaffold(
-      backgroundColor: isDark ? tbgDarkColor : tbgColor,
+      backgroundColor: themeController.isDark() ? tbgDarkColor : tbgColor,
       appBar: const AppBarWidget(pageName: "Add Product"),
       drawer: const DrawerWidget(),
-      body: SingleChildScrollView(child: mainBody(isDark)),
+      body: SingleChildScrollView(child: mainBody()),
     );
   }
 
-  Widget mainBody(bool isDark) {
+  Widget mainBody() {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: isDark ? tbgDarkColor : tbgColor,
+        color: themeController.isDark() ? tbgDarkColor : tbgColor,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(10),
       ),
@@ -74,19 +67,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ),
           const SizedBox(height: 20),
           // add product form
-          form(isDark),
+          form(),
         ],
       ),
     );
   }
 
   //add product form
-  Widget form(bool isDark) {
+  Widget form() {
     return Container(
       padding: const EdgeInsets.all(8.0),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white60,
+        color: themeController.isDark() ? taccentDarkColor : taccentColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Form(
@@ -94,7 +87,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //image field
-            imageField(isDark),
+            imageField(),
             const SizedBox(height: 15),
             //category field
             dropdownField(),
@@ -109,12 +102,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
             formField("Product Quantity"),
             const SizedBox(height: 15),
             // submit button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text("Add Product"),
-              ),
+            AddButtonWiget(
+              buttonName: "Add Product",
+              onPress: () {},
+              loading: true,
             ),
           ],
         ),
@@ -178,7 +169,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   //image field
-  Widget imageField(bool isDark) {
+  Widget imageField() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -225,7 +216,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   child: Text(
                     "Choose Image",
                     style: TextStyle(
-                      color: isDark ? ttextColor : ttextDarkColor,
+                      color: themeController.isDark() ? ttextColor : ttextDarkColor,
                     ),
                   ),
                 ),

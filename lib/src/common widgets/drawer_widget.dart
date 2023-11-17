@@ -18,8 +18,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final DrawersController drawerController = Get.put(DrawersController());
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var drawerSize = size.width * .8;
+    var drawerSize = Get.size.width * .8;
 
     return Drawer(
       backgroundColor: Colors.white,
@@ -36,8 +35,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           drawerMenuItem(context, Icons.local_grocery_store_outlined, "Products", () {
             Get.toNamed(RouteHelper.productPage);
           }),
-          drawerMenuItem(context, Icons.receipt_long_outlined, "Orders", () {}),
-          drawerMenuItem(context, Icons.people_outline, "Customers", () {}),
+          drawerMenuItem(context, Icons.receipt_long_outlined, "Orders", () {
+            Get.toNamed(RouteHelper.orderPage);
+          }),
+          drawerMenuItem(context, Icons.people_outline, "Customers", () {
+            Get.toNamed(RouteHelper.customerPage);
+          }),
           drawerMenuItem(context, Icons.cancel_outlined, "Out of Stock", () {}),
           const SizedBox(height: 10),
           Divider(color: Colors.grey.shade200, thickness: 2),

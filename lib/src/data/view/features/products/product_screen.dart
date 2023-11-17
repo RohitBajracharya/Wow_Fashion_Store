@@ -1,5 +1,6 @@
 import 'package:admin_side/src/common%20widgets/appbar_widget.dart';
 import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
+import 'package:admin_side/src/common%20widgets/setting_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
 import 'package:admin_side/src/constants/sizes.dart';
 import 'package:admin_side/src/data/controller/theme_controller.dart';
@@ -24,23 +25,16 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = themeController.themeMode.value;
-    bool isDark;
-    if (themeMode == ThemeMode.dark) {
-      isDark = true;
-    } else {
-      isDark = false;
-    }
     return Scaffold(
       appBar: const AppBarWidget(pageName: "Product"),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
-        child: mainBody(isDark),
+        child: mainBody(),
       ),
     );
   }
 
-  Widget mainBody(bool isDark) {
+  Widget mainBody() {
     return Container(
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -71,14 +65,14 @@ class _ProductScreenState extends State<ProductScreen> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    itemCard("Ash-Hoodie", "assets/images/hoodie/ash-hoodie.png", "1200", "20", isDark),
-                    itemCard("Black-Hoodie", "assets/images/hoodie/black-hoodie.png", "1200", "20", isDark),
+                    itemCard("Ash-Hoodie", "assets/images/hoodie/ash-hoodie.png", "1200", "20"),
+                    itemCard("Black-Hoodie", "assets/images/hoodie/black-hoodie.png", "1200", "20"),
                   ],
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    itemCard("Blue-Hoodie", "assets/images/hoodie/blue-hoodie.png", "1200", "20", isDark),
+                    itemCard("Blue-Hoodie", "assets/images/hoodie/blue-hoodie.png", "1200", "20"),
                   ],
                 ),
               ],
@@ -90,7 +84,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   //item card
-  Widget itemCard(String itemName, String image, String price, String stock, bool isDark) {
+  Widget itemCard(String itemName, String image, String price, String stock) {
     return Container(
       margin: const EdgeInsets.all(10.0),
       width: screenWidth * 0.4,
@@ -105,7 +99,7 @@ class _ProductScreenState extends State<ProductScreen> {
       child: Column(
         children: [
           // item name and dots button
-          itemNameNDots(itemName, isDark),
+          itemNameNDots(itemName),
           // item image
           SizedBox(
             height: 130,
@@ -114,14 +108,14 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
           ),
           // item price and quantity
-          itemPriceNQuantity(price, isDark, stock),
+          itemPriceNQuantity(price, stock),
         ],
       ),
     );
   }
 
   // item name and dots button
-  Widget itemNameNDots(String itemName, bool isDark) {
+  Widget itemNameNDots(String itemName) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -137,10 +131,10 @@ class _ProductScreenState extends State<ProductScreen> {
               itemName,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isDark ? tappColor : tappDarkColor,
+                    color: themeController.isDark() ? tappColor : tappDarkColor,
                   ),
             ),
-            tripleDotsButton(isDark),
+            const SettingWidget(icon: Icons.more_vert),
           ],
         ),
       ),
@@ -148,7 +142,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   // item price and quantity
-  Widget itemPriceNQuantity(String price, bool isDark, String stock) {
+  Widget itemPriceNQuantity(String price, String stock) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -167,7 +161,7 @@ class _ProductScreenState extends State<ProductScreen> {
               "Rs $price",
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isDark ? tappColor : tappDarkColor,
+                    color: themeController.isDark() ? tappColor : tappDarkColor,
                   ),
             ),
           ),
@@ -186,7 +180,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 stock,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: isDark ? tappColor : tappDarkColor,
+                      color: themeController.isDark() ? tappColor : tappDarkColor,
                     ),
               )
             ],
@@ -197,30 +191,7 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  PopupMenuButton<dynamic> tripleDotsButton(bool isDark) {
-    return PopupMenuButton(
-      constraints: const BoxConstraints(
-        maxWidth: 50,
-        minWidth: 50,
-      ),
-      icon: Icon(
-        Icons.more_vert,
-        color: isDark ? tappColor : tappDarkColor,
-      ),
-      itemBuilder: (context) => [
-        const PopupMenuItem(
-          child: Icon(
-            Icons.edit,
-            color: Colors.green,
-          ),
-        ),
-        const PopupMenuItem(
-          child: Icon(Icons.delete, color: Colors.red),
-        ),
-      ],
-    );
-  }
-
+  //add new button
   Widget addNewButton() {
     return ElevatedButton(
       onPressed: () {

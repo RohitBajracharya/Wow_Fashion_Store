@@ -44,37 +44,37 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC7mSmYcSytipJFu7HGkZxBC4X-z3MU-o8',
-    appId: '1:827690532017:web:eee1e0a72f7ffcc23e3690',
-    messagingSenderId: '827690532017',
-    projectId: 'grocery-store-499bb',
-    authDomain: 'grocery-store-499bb.firebaseapp.com',
-    storageBucket: 'grocery-store-499bb.appspot.com',
+    apiKey: 'AIzaSyArsWkiU5V_NjDJrKDGr8MxVcvmamnnUYQ',
+    appId: '1:1019694692270:web:92716b38e892506691ba3f',
+    messagingSenderId: '1019694692270',
+    projectId: 'fashion-store-29070',
+    authDomain: 'fashion-store-29070.firebaseapp.com',
+    storageBucket: 'fashion-store-29070.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAM6sAg6MGcs4FD8XYa2rKw2rapvPpegQY',
-    appId: '1:827690532017:android:7e50956c2d18781c3e3690',
-    messagingSenderId: '827690532017',
-    projectId: 'grocery-store-499bb',
-    storageBucket: 'grocery-store-499bb.appspot.com',
+    apiKey: 'AIzaSyB0gpAXI3s-4y2Ge0FfP107ZKdPQcXnuiU',
+    appId: '1:1019694692270:android:c2e1e6df62d90c0791ba3f',
+    messagingSenderId: '1019694692270',
+    projectId: 'fashion-store-29070',
+    storageBucket: 'fashion-store-29070.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDU-UXvJSF-6ZDyBfmOWo8CBGwtKH5tJis',
-    appId: '1:827690532017:ios:bdb70ab94b0d70d83e3690',
-    messagingSenderId: '827690532017',
-    projectId: 'grocery-store-499bb',
-    storageBucket: 'grocery-store-499bb.appspot.com',
+    apiKey: 'AIzaSyAkhn4skPtWsgznsU8o1tHMTf3YklxNpNg',
+    appId: '1:1019694692270:ios:9a96ae1a383ed81f91ba3f',
+    messagingSenderId: '1019694692270',
+    projectId: 'fashion-store-29070',
+    storageBucket: 'fashion-store-29070.appspot.com',
     iosBundleId: 'com.example.adminSide',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDU-UXvJSF-6ZDyBfmOWo8CBGwtKH5tJis',
-    appId: '1:827690532017:ios:e10d6b3e8b0aa2173e3690',
-    messagingSenderId: '827690532017',
-    projectId: 'grocery-store-499bb',
-    storageBucket: 'grocery-store-499bb.appspot.com',
+    apiKey: 'AIzaSyAkhn4skPtWsgznsU8o1tHMTf3YklxNpNg',
+    appId: '1:1019694692270:ios:c3b41c3a26ad09f491ba3f',
+    messagingSenderId: '1019694692270',
+    projectId: 'fashion-store-29070',
+    storageBucket: 'fashion-store-29070.appspot.com',
     iosBundleId: 'com.example.adminSide.RunnerTests',
   );
 }

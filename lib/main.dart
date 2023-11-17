@@ -21,6 +21,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final ThemeController themeController = Get.put(ThemeController());
+
   @override
   Widget build(BuildContext context) {
     return Obx(

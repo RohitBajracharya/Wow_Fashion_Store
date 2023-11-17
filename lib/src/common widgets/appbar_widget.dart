@@ -42,9 +42,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             padding: const EdgeInsets.all(16.0),
             child: Obx(
               () {
-                bool isDark = themeController.themeMode.value == ThemeMode.dark;
                 return Icon(
-                  isDark ? Icons.light_mode : Icons.dark_mode,
+                  themeController.isDark() ? Icons.light_mode : Icons.dark_mode,
                 );
               },
             ),

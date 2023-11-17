@@ -23,46 +23,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = themeController.themeMode.value;
-    bool isDark;
-    if (themeMode == ThemeMode.dark) {
-      isDark = true;
-    } else {
-      isDark = false;
-    }
-
     return Scaffold(
       appBar: const AppBarWidget(pageName: "Home"),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
-        child: mainBody(isDark),
+        child: mainBody(),
       ),
     );
   }
 
   //main body
-  Widget mainBody(bool isDark) {
+  Widget mainBody() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
           //Items cards
-          itemsSection(isDark),
+          itemsSection(),
           // product sales chart
-          productSalesChart(isDark),
+          productSalesChart(),
         ],
       ),
     );
   }
 
   //product Sales Chart
-  Widget productSalesChart(bool isDark) {
+  Widget productSalesChart() {
     return Container(
       padding: const EdgeInsets.all(16.0),
       width: double.infinity,
       height: 400,
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
+        color: themeController.isDark() ? Colors.grey.withOpacity(0.2) : Colors.white,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(10),
       ),
@@ -93,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(8.0),
                 width: 75,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
+                  color: themeController.isDark() ? Colors.grey.withOpacity(0.2) : Colors.white,
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -110,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(8.0),
                 width: 75,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
+                  color: themeController.isDark() ? Colors.grey.withOpacity(0.2) : Colors.white,
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -131,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //Items section
-  Widget itemsSection(bool isDark) {
+  Widget itemsSection() {
     return Column(
       children: [
         Row(
@@ -141,12 +133,12 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCard(Icons.category_outlined, "Categories", "6", () {
               drawerController.selectDrawerItem("Categories");
               Get.toNamed(RouteHelper.categoriesPage);
-            }, isDark),
+            }),
             //products
             itemCard(Icons.local_grocery_store_outlined, "Products", "200", () {
               drawerController.selectDrawerItem("Products");
               Get.toNamed(RouteHelper.productPage);
-            }, isDark),
+            }),
           ],
         ),
         Row(
@@ -155,11 +147,13 @@ class _HomeScreenState extends State<HomeScreen> {
             //orders
             itemCard(Icons.receipt_long_outlined, "Orders", "25", () {
               drawerController.selectDrawerItem("Orders");
-            }, isDark),
+              Get.toNamed(RouteHelper.orderPage);
+            }),
             //customers
             itemCard(Icons.people_outline, "Customers", "55", () {
               drawerController.selectDrawerItem("Customers");
-            }, isDark),
+              Get.toNamed(RouteHelper.customerPage);
+            }),
           ],
         ),
         Row(
@@ -168,11 +162,11 @@ class _HomeScreenState extends State<HomeScreen> {
             //delivery
             itemCard(Icons.delivery_dining, "Delivery", "3", () {
               drawerController.selectDrawerItem("Delivery");
-            }, isDark),
+            }),
             //out of stock
             itemCard(Icons.cancel_outlined, "Out of Stock", "5", () {
               drawerController.selectDrawerItem("Out of Stock");
-            }, isDark),
+            }),
           ],
         ),
       ],
@@ -180,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //Item card
-  Widget itemCard(IconData icon, String iconName, String quantity, VoidCallback onTap, bool isDark) {
+  Widget itemCard(IconData icon, String iconName, String quantity, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -192,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: screenWidth * .42,
               height: 120,
               decoration: BoxDecoration(
-                color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
+                color: themeController.isDark() ? Colors.grey.withOpacity(0.2) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
