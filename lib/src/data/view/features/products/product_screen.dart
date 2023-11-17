@@ -3,8 +3,10 @@ import 'package:admin_side/src/common%20widgets/drawer_widget.dart';
 import 'package:admin_side/src/common%20widgets/setting_widget.dart';
 import 'package:admin_side/src/constants/colors.dart';
 import 'package:admin_side/src/constants/sizes.dart';
+import 'package:admin_side/src/data/controller/product_controller.dart';
 import 'package:admin_side/src/data/controller/theme_controller.dart';
 import 'package:admin_side/src/routes/route_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,11 +19,13 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   ThemeController themeController = Get.put(ThemeController());
+  ProductController productController = Get.put(ProductController());
+  String? _selectedCategory = "";
+
   _ProductScreenState() {
-    _selectedVal = _categoriesList[0];
+    productController.getCategoryName();
+    _selectedCategory = productController.categoriesListMain[0];
   }
-  final _categoriesList = ["All Products", "Shoes", "Tshirt", "Pant", "Shirt"];
-  String? _selectedVal = "";
 
   @override
   Widget build(BuildContext context) {
@@ -59,32 +63,49 @@ class _ProductScreenState extends State<ProductScreen> {
           addNewButton(),
           const SizedBox(height: 15.0),
           // product list
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    itemCard("Ash-Hoodie", "assets/images/hoodie/ash-hoodie.png", "1200", "20"),
-                    itemCard("Black-Hoodie", "assets/images/hoodie/black-hoodie.png", "1200", "20"),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    itemCard("Blue-Hoodie", "assets/images/hoodie/blue-hoodie.png", "1200", "20"),
-                  ],
-                ),
-              ],
-            ),
-          )
+          productCardList(),
         ],
       ),
     );
   }
 
+  Widget productCardList() {
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: 10000,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: _selectedCategory == "All Products" ? productController.productFireStoreRef.snapshots() : productController.productFireStoreRef.where("category", isEqualTo: _selectedCategory).snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: tappColor,
+                ),
+              );
+            }
+
+            List<Map<String, dynamic>> items = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+            return ListView.builder(
+              itemCount: (items.length / 2).ceil(),
+              itemBuilder: (context, index) {
+                int startIndex = index * 2;
+                int endIndex = startIndex + 2;
+                List<Map<String, dynamic>> rowItems = items.sublist(startIndex, endIndex.clamp(0, items.length));
+
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: generateRows(rowItems),
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   //item card
-  Widget itemCard(String itemName, String image, String price, String stock) {
+  Widget itemCard(Map<String, dynamic> item) {
     return Container(
       margin: const EdgeInsets.all(10.0),
       width: screenWidth * 0.4,
@@ -99,23 +120,23 @@ class _ProductScreenState extends State<ProductScreen> {
       child: Column(
         children: [
           // item name and dots button
-          itemNameNDots(itemName),
+          itemNameNDots(item),
           // item image
           SizedBox(
             height: 130,
             child: Image(
-              image: AssetImage(image),
+              image: NetworkImage(item['productImage']),
             ),
           ),
           // item price and quantity
-          itemPriceNQuantity(price, stock),
+          itemPriceNQuantity(item['productPrice'], item['productQuantity']),
         ],
       ),
     );
   }
 
   // item name and dots button
-  Widget itemNameNDots(String itemName) {
+  Widget itemNameNDots(Map<String, dynamic> item) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -127,14 +148,24 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              itemName,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: themeController.isDark() ? tappColor : tappDarkColor,
-                  ),
+            SizedBox(
+              width: screenWidth * 0.4 * 0.5,
+              child: Text(
+                item['productName'],
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.bold,
+                      color: themeController.isDark() ? tappColor : tappDarkColor,
+                    ),
+              ),
             ),
-            const SettingWidget(icon: Icons.more_vert),
+            SettingWidget(
+              icon: Icons.more_vert,
+              deleteFunction: () => productController.deleteProduct(item['id']),
+              editFunction: () => Get.toNamed(RouteHelper.editProductPage, arguments: {
+                'item': item,
+              }),
+            ),
           ],
         ),
       ),
@@ -210,27 +241,29 @@ class _ProductScreenState extends State<ProductScreen> {
 
   //dropdown field
   Widget dropdownField() {
-    return SizedBox(
-      width: screenWidth * .3,
-      child: DropdownButtonFormField(
-        alignment: Alignment.centerLeft,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.all(10.0),
+    return Obx(
+      () => SizedBox(
+        width: screenWidth * .3,
+        child: DropdownButtonFormField(
+          alignment: Alignment.centerLeft,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.all(10.0),
+          ),
+          icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+          style: Theme.of(context).textTheme.bodySmall,
+          value: _selectedCategory,
+          items: productController.categoriesListMain.toSet().map((e) {
+            return DropdownMenuItem(
+              value: e,
+              child: Text(e),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              _selectedCategory = value as String;
+            });
+          },
         ),
-        icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-        style: Theme.of(context).textTheme.bodySmall,
-        value: _selectedVal,
-        items: _categoriesList.map((e) {
-          return DropdownMenuItem(
-            value: e,
-            child: Text(e),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            _selectedVal = value as String;
-          });
-        },
       ),
     );
   }
@@ -253,5 +286,23 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
       ),
     );
+  }
+
+  //method to generate rows based on product item number
+  List<Widget> generateRows(List<Map<String, dynamic>> items) {
+    List<Widget> rows = [];
+
+    for (int i = 0; i < items.length; i += 2) {
+      List<Widget> rowChildren = [];
+      for (int j = i; j < i + 2 && j < items.length; j++) {
+        rowChildren.add(itemCard(items[j]));
+      }
+      rows.add(Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: rowChildren,
+      ));
+    }
+
+    return rows;
   }
 }

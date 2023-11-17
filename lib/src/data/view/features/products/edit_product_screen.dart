@@ -8,24 +8,20 @@ import 'package:get/get.dart';
 
 import '../../../controller/theme_controller.dart';
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({
+class EditProductScreen extends StatefulWidget {
+  const EditProductScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<EditProductScreen> createState() => _EditProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _EditProductScreenState extends State<EditProductScreen> {
   ProductController productController = Get.put(ProductController());
-  _AddProductScreenState() {
+  _EditProductScreenState() {
     productController.getCategoryName();
-
-    _selectedCategory = productController.categoriesListForm[0];
   }
-
-  String? _selectedCategory = "";
 
   final ThemeController themeController = Get.put(ThemeController());
 
@@ -51,7 +47,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         children: [
           //page title
           Text(
-            "Add Product",
+            "Edit Product",
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 20),
@@ -65,6 +61,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   //add product form
   Widget form() {
     final formKey = GlobalKey<FormState>();
+    final Map<String, dynamic> arguments = Get.arguments as Map<String, dynamic>;
+    final Map<String, dynamic> item = arguments['item'];
+    productController.setSelectedCategory(item['category'] as String);
+    productController.nameController.text = item['productName'];
+    productController.priceController.text = item['productPrice'];
+    productController.quantityController.text = item['productQuantity'];
     return Container(
       padding: const EdgeInsets.all(8.0),
       width: double.infinity,
@@ -78,7 +80,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //image field
-            imageField(),
+            imageField(item),
             const SizedBox(height: 15),
             //category field
             dropdownField(),
@@ -107,11 +109,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
             // submit button
             Obx(
               () => AddButtonWiget(
-                buttonName: "Add Product",
+                buttonName: "Edit Product",
                 loading: productController.loading.value,
                 onPress: () {
                   if (formKey.currentState!.validate()) {
-                    productController.addProduct();
+                    productController.editProduct(item);
                   }
                 },
               ),
@@ -140,7 +142,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             ),
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             style: Theme.of(context).textTheme.bodySmall,
-            value: _selectedCategory,
+            value: productController.selectedCategory,
             items: productController.categoriesListForm.toSet().where((category) => category != "All Products").map((e) {
               return DropdownMenuItem(
                 value: e,
@@ -180,7 +182,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   //image field
-  Widget imageField() {
+  Widget imageField(item) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -195,13 +197,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
             ),
             child: productController.image != null
-                ? Image.file(productController.image!.absolute)
-                : const Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 32,
-                    ),
-                  ),
+                ? Image.file(
+                    productController.image!.absolute,
+                    color: themeController.isDark() ? Colors.white : Colors.black,
+                  )
+                : Image.network(item['productImage']),
           ),
         ),
         const SizedBox(width: 5),

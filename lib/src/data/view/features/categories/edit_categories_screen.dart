@@ -93,10 +93,12 @@ class _EditCategoriesScreenState extends State<EditCategoriesScreen> {
                         color: themeController.isDark() ? Colors.white : Colors.black,
                       ),
                     ),
-                    child: Image(
-                      image: NetworkImage(iconImage),
-                      color: themeController.isDark() ? Colors.white : null,
-                    ),
+                    child: categoryController.image != null
+                        ? Image.file(
+                            categoryController.image!.absolute,
+                            color: themeController.isDark() ? Colors.white : Colors.black,
+                          )
+                        : Image.network(iconImage),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -158,11 +160,11 @@ class _EditCategoriesScreenState extends State<EditCategoriesScreen> {
             //add categories button
             Obx(
               () => AddButtonWiget(
-                buttonName: "Add Category",
+                buttonName: "Edit Category",
                 loading: categoryController.loading.value,
                 onPress: () {
                   if (formKey.currentState!.validate() && categoryController.image != null) {
-                    categoryController.addCategory();
+                    categoryController.editCategory(id);
                   } else if (categoryController.image == null) {
                     Utils().failureMessage("Please select category icon");
                   }
